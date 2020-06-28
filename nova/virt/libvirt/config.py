@@ -2594,12 +2594,20 @@ class LibvirtConfigGuestFeatureHyperV(LibvirtConfigGuestFeature):
         self.spinlock_retries = self.MIN_SPINLOCK_RETRIES
         self.vendorid_spoof = False
         self.vendorid = self.SPOOFED_VENDOR_ID
-
+        #fix windows 10 CPU bug
+        self.synic = False
+        self.runtime = False
+        self.stimer = False
+        self.frequencies = False
     def format_dom(self):
         root = super(LibvirtConfigGuestFeatureHyperV, self).format_dom()
 
         if self.relaxed:
             root.append(etree.Element("relaxed", state="on"))
+            root.append(etree.Element("synic", state="on"))
+            root.append(etree.Element("runtime", state="on"))
+            root.append(etree.Element("stimer", state="on"))
+            root.append(etree.Element("frequencies", state="on"))
         if self.vapic:
             root.append(etree.Element("vapic", state="on"))
         if self.spinlocks:
